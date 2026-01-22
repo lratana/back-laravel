@@ -1,0 +1,27 @@
+services:
+  vue-development:
+    build:
+      context: .
+      target: development # Use the development stage
+    image: my-front-development:latest # Image name
+    container_name: my-front-development-container # Name of the container
+    command: sh /app/start.sh # Command to start Vite dev server
+    volumes:
+      - ./:/app # Mount the project directory
+    ports:
+      - 5173:5173 # Vite dev server port
+    tty: true # Keep the container running
+    stdin_open: true # Keep the container running
+    environment:
+      VITE_HMR_PORT: 5173 # HMR port for Vite
+
+  vue-production:
+    build:
+      context: . # Build context
+      target: production # Use the production stage
+    image: my-front-production:latest # Image name
+    container_name: my-front-production-container # Name of the container
+    volumes:
+      - ./dist:/usr/local/apache2/htdocs/ # Mount the build output
+    ports:
+      - 3000:80 # Apache server port
